@@ -26,10 +26,8 @@ tryLevels ys [] = [safeLevel ys]
 tryLevels ys (x:xs) = safeLevel (diffs $ reverse ys ++ xs) : tryLevels (x:ys) xs
 
 solve :: Handle -> Handle -> IO()
-solve inputStream outputStream = do
-    doc <- hGetContents inputStream
-    let reps :: [[Int]] = fmap read . words <$> lines doc
-    hPrint outputStream $ count $ or . tryLevels [] <$> reps
+solve inputStream outputStream = hGetContents inputStream >>= 
+    (hPrint outputStream . count . ((or . tryLevels [] . fmap read . words) <$>) . lines)
 
 -- liftA2 :: (Bool -> Bool -> Bool) -> ([Int] -> Bool) -> ([Int] -> Bool) -> ([Int] -> Bool)
 
