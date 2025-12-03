@@ -7,10 +7,10 @@ count (True:xs) = 1 + count xs
 count (False:xs) = count xs
 
 allPos :: [Int] -> Bool
-allPos = all ((== 1) . signum)
+allPos = all (>0)
 
 allNeg :: [Int] -> Bool
-allNeg = all ((== (-1)) . signum)
+allNeg = all (<0)
 
 solve :: Handle -> Handle -> IO()
 solve inputStream outputStream = do

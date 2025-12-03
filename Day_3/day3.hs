@@ -3,6 +3,7 @@ import Control.Monad
 import Control.Arrow
 import Control.Applicative
 import Data.Char
+import Data.List
 
 newtype Parser a = Parser { parse :: String -> [(a, String)] }
 
@@ -36,14 +37,13 @@ digit :: Parser Char
 digit = satisfy isDigit
 
 char :: Char -> Parser Char
-char c = satisfy (== c)
+char = satisfy . (==)
 
 string :: String -> Parser String
 string = traverse char
 
 parseAll :: Parser String -> String -> [(String, String)]
-parseAll _ "" = []
-parseAll p str@(_:tr) = parse p str ++ parseAll p tr
+parseAll p = concatMap (parse p) . tails
 
 solve :: Handle -> Handle -> IO()
 solve inputStream outputStream = do
